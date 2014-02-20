@@ -1,6 +1,6 @@
 #ifndef FANCYWINDOW_H
 #define FANCYWINDOW_H
-#include "mySubscriber.h"
+
 #include <boost/signal.hpp>
 #include <boost/bind.hpp>
 #include <QDialog>
@@ -15,11 +15,16 @@
 #include <QLineEdit>
 #include <stdio.h>
 #include <QStatusBar>
-#include "fancyViewer.h"
 #include "FancyQueue.h"
 #include <QString>
+#include <iostream>
+#include <fstream>
+#include <QTime>
 #include <string>
+#include "mySubscriber.h"
+#include "fancyViewer.h"
 
+class MySubscriber;
 
 namespace Ui {
     class FancyWindow;
@@ -36,6 +41,11 @@ public:
     void subscriber(MySubscriber* m);
     FancyViewer* viewer;
     MySubscriber* sub;
+
+    void setLaserDistance(float f);
+    void setMeanError(float f);
+    void setMeanDistance(float f);
+
 private slots:
     void on_toggleError_clicked(bool checked);
     void on_recordingData_clicked();

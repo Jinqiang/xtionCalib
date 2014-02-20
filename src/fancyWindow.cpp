@@ -1,8 +1,6 @@
 #include "fancyWindow.h"
 #include <iostream>
 #include <fstream>
-#include <QTime>
-
 
 FancyWindow::FancyWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::FancyWindow)
 {
@@ -108,4 +106,16 @@ void FancyWindow::on_referenceError_clicked()
 {
     if(this->sub->computeRefenceDistance) this->sub->computeRefenceDistance=false;
     else this->sub->computeRefenceDistance=true;
+}
+
+void FancyWindow::setLaserDistance(float f){
+    this->ui->laserDistance->setText(QString::number(f).toAscii());
+}
+
+void FancyWindow::setMeanError(float f){
+    this->ui->pointMeanError->setText(QString::number(f).toAscii());
+}
+
+void FancyWindow::setMeanDistance(float f){
+    this->ui->distanceError->setText(QString::number(f));
 }

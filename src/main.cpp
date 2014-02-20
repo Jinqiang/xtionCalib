@@ -60,6 +60,7 @@ int main(int argc, char **argv)
     FancyWindow w;
     FancyQueue queue;
     MySubscriber mySub(w.viewer);
+    mySub._window=&w;
     mySub.queue=&queue;
     w.viewer->queue=&queue;
     w.sub=&mySub;

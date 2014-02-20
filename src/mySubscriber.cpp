@@ -67,6 +67,9 @@ void MySubscriber::LaserScanCleaner(const sensor_msgs::LaserScanConstPtr &src, m
     {
 
             dst.angles.push_back(startingAngle+src->angle_increment*i);
+            if((startingAngle+src->angle_increment*i)==0){
+                this->_window->setLaserDistance(src->ranges.at(i)*1000);
+            }
             dst.ranges.push_back(src->ranges.at(i));
 
     }
@@ -347,6 +350,8 @@ void MySubscriber::calibratePointCloudWithMultipliers(){
 
         }
         if(computeRefenceDistance){
+            this->_window->setMeanDistance(averageDistance/cloud.size());
+            this->_window->setMeanError(sqrt(averageError)/cloud.size());
 //            std::cout <<"average distance "<<averageDistance/cloud.size() <<" average error "<<sqrt(averageError)/cloud.size()<<"mm" << std::endl;
         }
     }

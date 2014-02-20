@@ -1,8 +1,9 @@
 #ifndef FANCYVIEWER_H
 #define FANCYVIEWER_H
 
-#include <boost/signal.hpp>
-#include <boost/bind.hpp>
+#include "shared/CalibrationMatrix.h"
+#include "FancyQueue.h"
+#include <QGLViewer/qglviewer.h>
 #include <QDialog>
 #include <QThread>
 #include <QLabel>
@@ -12,9 +13,8 @@
 #include <iostream>
 #include <QLineEdit>
 #include <stdio.h>
-#include <QGLViewer/qglviewer.h>
-#include "FancyQueue.h"
-#include "shared/CalibrationMatrix.h"
+
+
 
 class FancyViewer : public QGLViewer
 {

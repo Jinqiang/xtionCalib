@@ -12,6 +12,7 @@ public:
     pcl::PointCloud<pcl::PointXYZRGB> cloud;
     pcl::PointCloud<pcl::PointXYZRGB> correctCloud;
     pcl::PointCloud<pcl::PointXYZRGB> errorCloud;
+    pcl::PointCloud<pcl::PointXYZRGB> laserCloud;
     pcl::PointCloud<pcl::Normal> normals;
     Eigen::Vector4f planeCoefficient;
     Eigen::Vector4f planeCentroid;

@@ -44,7 +44,7 @@
        </spacer>
       </item>
       <item>
-       <layout class="QVBoxLayout" name="verticalLayout" stretch="0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0">
+       <layout class="QVBoxLayout" name="verticalLayout" stretch="0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0">
         <property name="spacing">
          <number>10</number>
         </property>
@@ -121,6 +121,12 @@
         </item>
         <item>
          <widget class="QLabel" name="label">
+          <property name="font">
+           <font>
+            <weight>75</weight>
+            <bold>true</bold>
+           </font>
+          </property>
           <property name="text">
            <string>Voxel leaf</string>
           </property>
@@ -135,6 +141,12 @@
         </item>
         <item>
          <widget class="QLabel" name="label_2">
+          <property name="font">
+           <font>
+            <weight>75</weight>
+            <bold>true</bold>
+           </font>
+          </property>
           <property name="text">
            <string>Normal Rejection</string>
           </property>
@@ -152,6 +164,12 @@
         </item>
         <item>
          <widget class="QLabel" name="label_3">
+          <property name="font">
+           <font>
+            <weight>75</weight>
+            <bold>true</bold>
+           </font>
+          </property>
           <property name="text">
            <string>Point size</string>
           </property>
@@ -166,6 +184,12 @@
         </item>
         <item>
          <widget class="QLabel" name="label_4">
+          <property name="font">
+           <font>
+            <weight>75</weight>
+            <bold>true</bold>
+           </font>
+          </property>
           <property name="text">
            <string>Background color</string>
           </property>
@@ -210,6 +234,12 @@
         </item>
         <item>
          <widget class="QLabel" name="label_5">
+          <property name="font">
+           <font>
+            <weight>75</weight>
+            <bold>true</bold>
+           </font>
+          </property>
           <property name="text">
            <string>Reference distance mm</string>
           </property>
@@ -222,6 +252,66 @@
           </property>
           <property name="singleStep">
            <number>100</number>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="label_6">
+          <property name="font">
+           <font>
+            <weight>75</weight>
+            <bold>true</bold>
+           </font>
+          </property>
+          <property name="text">
+           <string>LASER SENSED DISTANCE:</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="laserDistance">
+          <property name="text">
+           <string>666</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="label_8">
+          <property name="font">
+           <font>
+            <weight>75</weight>
+            <bold>true</bold>
+           </font>
+          </property>
+          <property name="text">
+           <string>POINT MEAN ERROR</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="pointMeanError">
+          <property name="text">
+           <string>777</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="label_10">
+          <property name="font">
+           <font>
+            <weight>75</weight>
+            <bold>true</bold>
+           </font>
+          </property>
+          <property name="text">
+           <string>DISTANCE MEAN ERROR</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="distanceError">
+          <property name="text">
+           <string>888</string>
           </property>
          </widget>
         </item>
