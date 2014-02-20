@@ -117,5 +117,5 @@ void FancyWindow::setMeanError(float f){
 }
 
 void FancyWindow::setMeanDistance(float f){
-    this->ui->distanceError->setText(QString::number(f));
+    this->ui->distanceError->setText(QString::number(f).toAscii());
 }
