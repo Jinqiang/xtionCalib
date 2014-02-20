@@ -7,6 +7,8 @@
 #include <message_filters/time_synchronizer.h>
 #include <message_filters/sync_policies/approximate_time.h>
 #include <image_transport/image_transport.h>
+#include <sensor_msgs/LaserScan.h>
+#include <laser_geometry/laser_geometry.h>
 #include <opencv/cv.h>
 #include <opencv/highgui.h>
 #include <cv_bridge/cv_bridge.h>
@@ -22,6 +24,9 @@
 #include "fancyWindow.h"
 #include "shared/CalibrationMatrix.h"
 #include "mySubscriber.h"
+
+using namespace sensor_msgs;
+using namespace message_filters;
 
 class MyApplication : public QApplication
 {
@@ -60,9 +65,13 @@ int main(int argc, char **argv)
     w.sub=&mySub;
 
 
-
+    message_filters::Subscriber<LaserScan> l1(n, "/scan", 5);
+    message_filters::Subscriber<Image> l2(n, "/camera/depth/image_raw", 5);
+    typedef sync_policies::ApproximateTime<LaserScan, Image> MySyncPolicy;
+    message_filters::Synchronizer<MySyncPolicy> sync(MySyncPolicy(10),l1, l2);
+    sync.registerCallback(boost::bind(&MySubscriber::callback,&mySub, _1, _2));
     std::cout<<"TOPIC SUBSCRIBED INIT"<<std::endl;
-    ros::Subscriber s = n.subscribe("/camera/depth/image_raw", 5, &MySubscriber::callback, &mySub);
+    //ros::Subscriber s = n.subscribe("/camera/depth/image_raw", 5, &MySubscriber::callback, &mySub);
     w.show();
     return qapp.exec();
 }

@@ -17,6 +17,7 @@
   <depend package="image_transport"/>
   <depend package="ecl_threads"/>
   <depend package="pcl"/>
+  <depend package="laser_geometry"/>
   <depend package="pcl_ros"/>
 </package>
 

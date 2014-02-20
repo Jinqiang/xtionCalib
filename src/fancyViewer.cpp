@@ -17,6 +17,7 @@ void FancyViewer::draw()
 
     if(data.cloud.size()){
         drawPointcloud();
+        drawLaser();
         drawCentralNormal(data.planeCentroid,data.planeCoefficient);
         drawNormals();
     }
@@ -60,7 +61,7 @@ void FancyViewer::drawCentralNormal(Eigen::Vector4f p, Eigen::Vector4f c){
     Eigen::Vector3f t(c[0],c[1],c[2]);
     t.normalize();
 
-//    glVertex3f(p[0]+t[0]*550,p[1]+t[1]*550,p[2]+t[2]*550);
+    //    glVertex3f(p[0]+t[0]*550,p[1]+t[1]*550,p[2]+t[2]*550);
 
     glEnd();
     glPopMatrix();
@@ -134,6 +135,42 @@ void FancyViewer::drawPointcloud(){
                            400*n.normal_z+p.z);
                 glEnd();
             }
+
+
+        }
+    }
+    glPopMatrix();
+}
+
+
+void FancyViewer::drawLaser(){
+    glPointSize((float)pointSize);
+    glPushMatrix();
+    glRotatef(-90,0,1,0);
+
+    //    glRotatef(180,1,0,0);
+    pcl::PointXYZRGB p;
+    //    pcl::PointXYZRGB q;
+    //    pcl::Normal n;
+    if(data.laserCloud.size()) {
+
+
+        for(unsigned int i=0; i<data.laserCloud.size();i++){
+            p=data.laserCloud.at(i);
+
+            uint32_t rgb = *reinterpret_cast<int*>(&p.rgb);
+            uint8_t r = (rgb >> 16) & 0x0000ff;
+            uint8_t g = (rgb >> 8)  & 0x0000ff;
+            uint8_t b = (rgb)       & 0x0000ff;
+
+
+            glBegin(GL_POINTS);
+            glColor3f(255,
+                      0,
+                      0);
+
+            glVertex3f(p.x,p.y,p.z);
+            glEnd();
 
 
         }

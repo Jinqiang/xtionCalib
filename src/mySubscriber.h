@@ -10,6 +10,9 @@
 #include <message_filters/subscriber.h>
 #include <message_filters/time_synchronizer.h>
 #include <message_filters/sync_policies/approximate_time.h>
+#include <tf/transform_listener.h>
+#include <sensor_msgs/LaserScan.h>
+#include <laser_geometry/laser_geometry.h>
 #include <string>
 #include <boost/signal.hpp>
 #include <boost/bind.hpp>
@@ -42,12 +45,17 @@ using namespace message_filters;
 using namespace Eigen;
 using namespace std;
 
+class myLaserStructure{
+public:
+    std::vector<float> angles;
+    std::vector<float> ranges;
+};
 
 class MySubscriber{
     public:
         MySubscriber(FancyViewer*);
         ~MySubscriber();
-        void callback(const sensor_msgs::ImageConstPtr &imgPtr);
+        void callback(const LaserScanConstPtr &l1, const sensor_msgs::ImageConstPtr &imgPtr);
         void spin();
         FancyQueue* queue;
         float _validNormalRange;
@@ -56,11 +64,16 @@ class MySubscriber{
         bool shutdown_required;
         ecl::Thread thread;
         CalibrationMatrix multiplier;
+        myLaserStructure laser1;
         float voxelLeaf;
         float normalRejection;
         bool planeModelInliers;
         bool computeRefenceDistance;
         int refenceDistance;
+
+        void LaserScanCleaner(const sensor_msgs::LaserScanConstPtr &src, myLaserStructure &dst);
+        void scanToPointcloud(myLaserStructure &scan, pcl::PointCloud<pcl::PointXYZRGB> & cloud);
+        pcl::PointCloud<pcl::PointXYZRGB> laserCloud;
 
         void computePointcloud();
         void voxelize();

@@ -19,7 +19,9 @@ MySubscriber::~MySubscriber(){
     thread.join();
 }
 
-void MySubscriber::callback(const sensor_msgs::ImageConstPtr &imgPtr){
+void MySubscriber::callback(const LaserScanConstPtr &l1,const sensor_msgs::ImageConstPtr &imgPtr){
+    LaserScanCleaner(l1,this->laser1);
+     scanToPointcloud(this->laser1,laserCloud);
 
     _image = cv_bridge::toCvCopy(imgPtr, "mono16");
     if(!this->queue->status())
@@ -46,11 +48,52 @@ void MySubscriber::callback(const sensor_msgs::ImageConstPtr &imgPtr){
         payload.correctCloud=this->correctCloud;
         payload.normals= this->cloud_normals;
         payload.validPoints=this->validPoints;
+        payload.laserCloud=this->laserCloud;
         this->queue->data=payload;
         this->_viewer->data=payload;
         this->queue->unlock();
     }
 }
+
+//LASER STUFF --------------START
+
+void MySubscriber::LaserScanCleaner(const sensor_msgs::LaserScanConstPtr &src, myLaserStructure &dst){
+    dst.angles.clear();
+    dst.ranges.clear();
+
+
+    float startingAngle=src->angle_min;
+    for(unsigned int i=0;i<src->ranges.size();i++)
+    {
+
+            dst.angles.push_back(startingAngle+src->angle_increment*i);
+            dst.ranges.push_back(src->ranges.at(i));
+
+    }
+
+}
+
+
+void MySubscriber::scanToPointcloud(myLaserStructure &scan, pcl::PointCloud<pcl::PointXYZRGB> & cloud){
+    pcl::PointXYZRGB p;
+    cloud.points.clear();
+    for(unsigned int i=0; i < scan.angles.size(); i++)
+    {
+        p.x=-scan.ranges.at(i)*cos(scan.angles.at(i))*1000;
+        p.y=0;//scan.ranges.at(i)*sin(scan.angles.at(i));
+        p.z=scan.ranges.at(i)*sin(scan.angles.at(i))*1000;
+//        std::cout<< p.z<<std::endl;
+        uint8_t r = 0, g = 255, b = 255;    // Example: Red color
+        uint32_t rgb = ((uint32_t)r << 16 | (uint32_t)g << 8 | (uint32_t)b);
+        p.rgb = *reinterpret_cast<float*>(&rgb);
+        cloud.points.push_back(p);
+
+
+    }
+}
+
+//LASER STUFF --------------END
+
 
 void MySubscriber::spin() {
     ros::Rate loop(10);
@@ -87,7 +130,7 @@ void MySubscriber::computePointcloud()
             p.x=i;
             p.y=j;
             if(i==320 && j==240){
-                std::cout<<"center distance "<<((float)this->_image->image.at<ushort>(p))<<" ";
+//                std::cout<<"center distance "<<((float)this->_image->image.at<ushort>(p))<<" ";
             }
             v=((float)this->_image->image.at<ushort>(p));
 
@@ -304,7 +347,7 @@ void MySubscriber::calibratePointCloudWithMultipliers(){
 
         }
         if(computeRefenceDistance){
-            std::cout <<"average distance "<<averageDistance/cloud.size() <<" average error "<<sqrt(averageError)/cloud.size()<<"mm" << std::endl;
+//            std::cout <<"average distance "<<averageDistance/cloud.size() <<" average error "<<sqrt(averageError)/cloud.size()<<"mm" << std::endl;
         }
     }
 }

@@ -32,6 +32,7 @@ private :
     virtual void draw();
     void drawCentralNormal(Eigen::Vector4f p, Eigen::Vector4f c);
     void drawNormals();
+    void drawLaser();
     virtual void init();
     virtual void animate();
 };
