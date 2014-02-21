@@ -32,6 +32,7 @@ void MySubscriber::callback(const LaserScanConstPtr &l1,const sensor_msgs::Image
         computePointcloud();
         voxelize();
 
+        //computeCenterCloud();
         computeCenterCloud();
         computerCenterPlane();
         computeNormals();
@@ -156,6 +157,29 @@ void MySubscriber::computePointcloud()
 
 }
 
+void MySubscriber::computeCenterSquareCloud(){
+    this->centerCloud.clear();
+    pcl::PointXYZRGB pix;
+    _validNormalRange=300.0f;
+    for(unsigned int i=0; i<cloud.size();i++){
+        pix=cloud.at(i);
+        pcl::PointXYZRGB local = worldToImagePlane(pix);
+        if(local.x>300 && local.x<340 && local.y>200 && local.y<280){
+            this->centerCloud.push_back(pix);
+            pix.z=0;
+            uint8_t r,g,b;
+            if(planeModelInliers){
+             r= 0, g = 255, b = 0;
+            }
+            if(!planeModelInliers){
+                r= 0, g = 0, b = 255;
+            }
+
+            uint32_t rgb = ((uint32_t)r << 16 | (uint32_t)g << 8 | (uint32_t)b);
+            cloud.at(i).rgb = *reinterpret_cast<float*>(&rgb);
+        }
+    }
+}
 
 void MySubscriber::computeCenterCloud(){
     this->centerCloud.clear();

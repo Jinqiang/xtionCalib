@@ -27,55 +27,57 @@ static int one (const struct dirent *unused)
 
 int main(int argc, char **argv)
 {
-    CalibrationMatrix  _multiplier  (480,640,5000,4,8);
+    CalibrationMatrix  _multiplier  (480,640,20000,1,100);
     _multiplier.deserialize("prova.txt");
 
     std::cerr << "matrix loaded" << std::endl;
     CalibrationMatrix* scaledMultiplier = _multiplier.downsample(4,4);
     CalibrationMatrix& multiplier = *scaledMultiplier;
     multiplier.dumpSensorImages();
-    struct dirent **eps;
-    int n;
-    n = scandir ("./images/", &eps, pgmfilter, alphasort);
-    if (n >= 0)
-    {
-        int cnt;
-        for (cnt = 0; cnt < n; ++cnt){
-            std::cout<< "opening "<<eps[cnt]->d_name<<std::endl;
-            cv::Mat image;
-            std::string filename="./images/";
-            filename.append(eps[cnt]->d_name);
-            std::cout<<"OPENING:\t "<<filename<<std::endl;
-            image = cv::imread(filename,CV_LOAD_IMAGE_UNCHANGED);
+    multiplier.serialize("scaled.txt");
+
+//    struct dirent **eps;
+//    int n;
+//    n = scandir ("./images/", &eps, pgmfilter, alphasort);
+//    if (n >= 0)
+//    {
+//        int cnt;
+//        for (cnt = 0; cnt < n; ++cnt){
+//            std::cout<< "opening "<<eps[cnt]->d_name<<std::endl;
+//            cv::Mat image;
+//            std::string filename="./images/";
+//            filename.append(eps[cnt]->d_name);
+//            std::cout<<"OPENING:\t "<<filename<<std::endl;
+//            image = cv::imread(filename,CV_LOAD_IMAGE_UNCHANGED);
 
 
-            int cols=image.cols;
-            int rows=image.rows;
-            cv::Point p;
-            ushort v;
-            for (int i=0;i<cols;i++){
-                for(int j=0;j<rows;j++){
-                    p.x=i;
-                    p.y=j;
-                    v=((float)image.at<ushort>(p));
+//            int cols=image.cols;
+//            int rows=image.rows;
+//            cv::Point p;
+//            ushort v;
+//            for (int i=0;i<cols;i++){
+//                for(int j=0;j<rows;j++){
+//                    p.x=i;
+//                    p.y=j;
+//                    v=((float)image.at<ushort>(p));
 
-//                   if(multiplier.cell(p.y,p.x,v/10)!=1.0f)
-//                        std::cout << "was "<<v;
-                    v*=multiplier.cell(p.y,p.x,v);
-//                    if(multiplier.cell(p.y,p.x,v/10)!=1.0f)
-//                        std::cout << " is "<<v<<std::endl;
+////                   if(multiplier.cell(p.y,p.x,v/10)!=1.0f)
+////                        std::cout << "was "<<v;
+//                    v*=multiplier.cell(p.y,p.x,v);
+////                    if(multiplier.cell(p.y,p.x,v/10)!=1.0f)
+////                        std::cout << " is "<<v<<std::endl;
 
-                    image.at<ushort>(p)=(ushort)v;
-                }
-            }
-            std::string outDir=("./images/calibrated/");
-            outDir.append(eps[cnt]->d_name);
-            cv::imwrite(outDir,image);
-            std::cout<< "saved "<<outDir<<std::endl;
-        }
-    }
-    else
-        perror ("Couldn't open the directory");
+//                    image.at<ushort>(p)=(ushort)v;
+//                }
+//            }
+//            std::string outDir=("./images/calibrated/");
+//            outDir.append(eps[cnt]->d_name);
+//            cv::imwrite(outDir,image);
+//            std::cout<< "saved "<<outDir<<std::endl;
+//        }
+//    }
+//    else
+//        perror ("Couldn't open the directory");
 
 
     return 0;

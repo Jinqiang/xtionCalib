@@ -73,6 +73,7 @@ class MySubscriber{
         void computePointcloud();
         void voxelize();
         void computeCenterCloud();
+        void computeCenterSquareCloud();
         void computerCenterPlane();
         void computeErrorPerPoint();
         void computeCalibrationMatrix();
